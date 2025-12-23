@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>엽서 뒤집기</title>
+    <style>
+        /* 1. 기본 설정 */
+        :root {
+            --card-width: 2183px;  /* 엽서 가로 크기 */
+            --card-height: 1543px; /* 엽서 세로 크기 */
+            --flip-speed: 0.8s;   /* 뒤집히는 속도 */
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5; /* 연한 회색 배경 */
+        }
+
+        /* 2. 뒤집기 제어 (체크박스 활용) */
+        #flip-toggle {
+            display: none;
+        }
+
+        /* 3. 카드 컨테이너 */
+        .postcard {
+            width: var(--card-width);
+            height: var(--card-height);
+            perspective: 1500px; /* 원근감 깊이 설정 */
+            cursor: pointer;
+        }
+
+        /* 4. 회전하는 내부 박스 */
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform var(--flip-speed) cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-radius: 10px;
+        }
+
+        /* 체크박스 클릭 시 180도 회전 */
+        #flip-toggle:checked + .postcard .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* 5. 앞면과 뒷면 공통 스타일 */
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* 뒤집혔을 때 반대면 숨김 */
+            -webkit-backface-visibility: hidden; /* 사파리 호환성 */
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* 이미지 맞춤 설정 */
+        .card-face img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 비율 유지하며 꽉 채움 */
+            display: block;
+        }
+
+        /* 6. 뒷면 설정 (이미 뒤집혀 있는 상태) */
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* 안내 문구 스타일 */
+        .info-text {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="checkbox" id="flip-toggle">
+
+    <label for="flip-toggle" class="postcard">
+        <div class="card-inner">
+            
+            <div class="card-face card-front">
+                <img src="front.png" alt="엽서 앞면">
+            </div>
+
+            <div class="card-face card-back">
+                <img src="back.png" alt="엽서 뒷면">
+            </div>
+
+        </div>
+        
+        <div class="info-text">엽서를 터치하면 뒤집힙니다.</div>
+    </label>
+
+</body>
+</html>
